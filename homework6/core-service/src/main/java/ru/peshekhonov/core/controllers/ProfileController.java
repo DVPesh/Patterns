@@ -20,7 +20,11 @@ public class ProfileController {
         if (roles.contains("ROLE_ADMIN")) {
             return ResponseEntity.ok(new StringResponse("admin"));
         }
-        return new ResponseEntity<>(new AppError(HttpStatus.FORBIDDEN.toString(), "Нет прав для доступа к ресурсу"),
+        return new ResponseEntity<>(
+                AppError.builder()
+                        .code(HttpStatus.FORBIDDEN.toString())
+                        .error("Нет прав для доступа к ресурсу")
+                        .build(),
                 HttpStatus.FORBIDDEN);
     }
 }

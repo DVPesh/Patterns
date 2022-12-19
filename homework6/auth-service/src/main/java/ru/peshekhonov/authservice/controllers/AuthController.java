@@ -39,7 +39,10 @@ public class AuthController {
 
     @ExceptionHandler
     public ResponseEntity<AppError> handleBadCredentialsException(BadCredentialsException e) {
-        return new ResponseEntity<>(new AppError("CHECK_TOKEN_ERROR", "Некорректный логин или пароль"),
-                HttpStatus.UNAUTHORIZED);
+        AppError appError = AppError.builder()
+                .code("CHECK_TOKEN_ERROR")
+                .error("Некорректный логин или пароль")
+                .build();
+        return new ResponseEntity<>(appError, HttpStatus.UNAUTHORIZED);
     }
 }

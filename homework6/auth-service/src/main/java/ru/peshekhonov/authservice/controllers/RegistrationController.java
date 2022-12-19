@@ -26,28 +26,47 @@ public class RegistrationController {
     public ResponseEntity<?> registerNewUser(@RequestBody VisitorRegistrationDto visitor) {
         if (visitor.getUsername() == null || visitor.getUsername().isBlank()) {
             return new ResponseEntity<>(
-                    new AppError("USER_DATA_ERROR", "Имя пользователя не задано"), HttpStatus.BAD_REQUEST);
+                    AppError.builder()
+                            .code("USER_DATA_ERROR")
+                            .error("Имя пользователя не задано")
+                            .build(),
+                    HttpStatus.BAD_REQUEST);
         }
         if (!visitor.getUsername().matches("^[a-zA-Z0-9]+$")) {
             return new ResponseEntity<>(
-                    new AppError("USER_DATA_ERROR", "В имени пользователя допустимы только латиница и цифры"),
+                    AppError.builder()
+                            .code("USER_DATA_ERROR")
+                            .error("В имени пользователя допустимы только латиница и цифры")
+                            .build(),
                     HttpStatus.BAD_REQUEST);
         }
         if (visitor.getPassword() == null || visitor.getPassword().isBlank()) {
             return new ResponseEntity<>(
-                    new AppError("USER_DATA_ERROR", "Пароль не задан"), HttpStatus.BAD_REQUEST);
+                    AppError.builder()
+                            .code("USER_DATA_ERROR")
+                            .error("Пароль не задан")
+                            .build(),
+                    HttpStatus.BAD_REQUEST);
         }
         if (visitor.getEmail() != null && visitor.getEmail().isBlank()) {
             visitor.setEmail(null);
         }
         if (visitorService.existsByUsername(visitor.getUsername())) {
             return new ResponseEntity<>(
-                    new AppError("USER_DATA_ERROR", "Такое имя пользователя уже существует"), HttpStatus.BAD_REQUEST);
+                    AppError.builder()
+                            .code("USER_DATA_ERROR")
+                            .error("Такое имя пользователя уже существует")
+                            .build(),
+                    HttpStatus.BAD_REQUEST);
         }
 
         if (visitor.getEmail() != null && visitorService.existsByEmail(visitor.getEmail())) {
             return new ResponseEntity<>(
-                    new AppError("USER_DATA_ERROR", "Такой Email уже есть"), HttpStatus.BAD_REQUEST);
+                    AppError.builder()
+                            .code("USER_DATA_ERROR")
+                            .error("Такой Email уже есть")
+                            .build(),
+                    HttpStatus.BAD_REQUEST);
         }
 
         visitorService.createUser(visitor);
