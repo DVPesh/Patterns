@@ -1,0 +1,85 @@
+<div>
+    <h1>Интернет магазин</h1>
+    <h3>Список товаров</h3>
+    <div class="row g-2">
+        <div class="col-6 col-md-2">
+            <form novalidate ng-submit="getProducts()">
+                <div class="form-floating input-group-sm">
+                    <input type="text" class="form-control" id="filterTitle" placeholder="Название продукта"
+                           ng-model="filter.title">
+                </div>
+                <p></p>
+                <div class="form-floating input-group-sm">
+                    <input type="number" class="form-control" id="filterMinPrice" placeholder="Мин. цена"
+                           ng-model="filter.min_price">
+                </div>
+                <p></p>
+                <div class="form-floating input-group-sm">
+                    <input type="number" class="form-control" id="filterMaxPrice" placeholder="Макс. цена"
+                           ng-model="filter.max_price">
+                </div>
+                <p></p>
+                <div class="form-floating input-group-sm">
+                    <select class="form-control" ng-model="filter.category" ng-options="t for t in categoryTitles">
+                        <option value="">Категория</option>
+                    </select>
+                </div>
+                <p></p>
+                <button class="btn btn-outline-warning btn-sm" style="width: 100%;" type="submit">Применить</button>
+            </form>
+        </div>
+        <div class="col-sm-6 col-md-10">
+            <table class="table table-hover table-bordered">
+                <thead class="table-primary" style="text-align: center; font-weight: bold;">
+                <tr>
+                    <td>ID</td>
+                    <td>Название</td>
+                    <td>Цена</td>
+                    <td>Категория</td>
+                    <td>Операции</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr dir-paginate="p in products | itemsPerPage: productsPerPage" total-items="totalProducts"
+                    current-page="pageNumber">
+                    <td>{{p.id}}</td>
+                    <td>{{p.title}}</td>
+                    <td>{{p.price}}</td>
+                    <td>{{p.categoryTitle}}</td>
+                    <td>
+                        <button class="btn btn-primary" ng-click="addToCart(p.id)">В корзину</button>
+                        <button class="btn btn-danger" ng-click="deleteProduct(p.id)" ng-show="hasUserTheManagerRole()">
+                            Удалить
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <dir-pagination-controls on-page-change="getProducts(newPageNumber)"
+                                     template-url="dirPaginationPattern.html"></dir-pagination-controls>
+        </div>
+    </div>
+    <div ng-show="hasUserTheManagerRole()">
+        <h3>Добавить продукт</h3>
+        <form class="row g-3" ng-submit="createNewProduct()">
+            <div class="col-auto">
+                <input type="text" class="form-control" id="newProductTitle" ng-model="newProduct.title"
+                       placeholder="Название">
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" id="newProductPrice" ng-model="newProduct.price"
+                       placeholder="Цена">
+            </div>
+            <div class="col-auto">
+                <!--            <input type="text" class="form-control" id="newProductCategoryTitle" ng-model="newProduct.categoryTitle"-->
+                <!--                   placeholder="Название категории">-->
+                <select class="form-control" ng-model="newProduct.categoryTitle" ng-options="t for t in categoryTitles">
+                    <option value="">Категория</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Добавить</button>
+            </div>
+        </form>
+    </div>
+</div>

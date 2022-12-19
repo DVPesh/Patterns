@@ -1,0 +1,48 @@
+<div>
+    <h3>Корзина</h3>
+    <table class="table table-hover table-bordered">
+        <thead class="table-primary" style="text-align: center; font-weight: bold;">
+        <tr>
+            <td>Название</td>
+            <td>Количество</td>
+            <td>Цена</td>
+            <td>Операции</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in cart.items">
+            <td>{{item.productTitle}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.pricePerProduct + ' x ' + item.quantity + ' = ' + item.cost}}</td>
+            <td>
+                <button class="btn btn-success" ng-click="subtractFromCart(item.productId)">—</button>
+                <button class="btn btn-success" ng-click="addToCart(item.productId)">+</button>
+                <button class="btn btn-secondary" ng-click="removeFromCart(item.productId)">Удалить</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Итого</td>
+            <td></td>
+            <td>{{cart.totalCost}}</td>
+            <td>
+                <button class="btn btn-warning" ng-show="cart.items.length > 0" ng-click="clearCart()">Очистить
+                    корзину
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <h3>Детали заказа</h3>
+    <form novalidate>
+        <input class="form-control" type="tel" placeholder="Номер телефона получателя" ng-model="orderDetails.phone">
+        <input class="form-control" type="text" placeholder="Адрес доставки" ng-model="orderDetails.address">
+    </form>
+
+    <button class="btn btn-primary" ng-click="checkOut()" ng-show="isUserLoggedIn() && cart.items.length > 0">
+        Оформить заказ
+    </button>
+    <button class="btn btn-secondary" ng-click="disabledCheckOut()"
+            ng-show="!isUserLoggedIn() && cart.items.length > 0">
+        Оформить заказ
+    </button>
+</div>

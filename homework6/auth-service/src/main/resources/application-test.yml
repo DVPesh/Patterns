@@ -1,0 +1,29 @@
+server:
+  port: 8187
+  servlet:
+    context-path: /service
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:auth-db;MODE=MySQL
+    username: sa
+    password:
+  test:
+    database:
+      replace: NONE
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: false
+  flyway:
+    locations: classpath:/db/test
+
+jwt:
+  secret: 3w2oi4urhf394ghf3497g948tyrh04283hi8wregf83w4gf8734yto34ht98h8&G*&^F7f3r87gihdsf
+  lifetime: 36000000

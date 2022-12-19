@@ -1,0 +1,14 @@
+server:
+  port: 8190
+  servlet:
+    context-path: /service
+
+integrations:
+  product-service:
+    url: http://localhost:8189/service
+    connect-timeout: 5000
+    read-timeout: 7000
+    write-timeout: 5000
+
+cart-service:
+  cart-prefix: cart_
