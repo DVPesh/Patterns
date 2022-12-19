@@ -54,6 +54,10 @@ public class RegistrationController {
 
         UserDetails userDetails = visitorService.loadUserByUsername(visitor.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token, visitorService.getUserRoleNames(visitor.getUsername())));
+        JwtResponse jwtResponse = JwtResponse.builder()
+                .token(token)
+                .roles(visitorService.getUserRoleNames(visitor.getUsername()))
+                .build();
+        return ResponseEntity.ok(jwtResponse);
     }
 }
