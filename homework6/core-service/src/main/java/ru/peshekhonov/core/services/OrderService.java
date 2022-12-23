@@ -38,15 +38,15 @@ public class OrderService {
         order.setTotalCost(cart.getTotalCost());
         List<OrderItem> items = cart.getItems().stream()
                 .map(o -> {
-                    OrderItem item = new OrderItem();
-                    item.setOrder(order);
-                    item.setQuantity(o.getQuantity());
-                    item.setPricePerProduct(o.getPricePerProduct());
-                    item.setCost(o.getCost());
                     Long productId = o.getProductId();
-                    item.setProduct(productService.findById(productId)
-                            .orElseThrow(() -> new ResourceNotFoundException("Продукт с id: " + productId + " не найден")));
-                    return item;
+                    return OrderItem.builder()
+                            .order(order)
+                            .quantity(o.getQuantity())
+                            .pricePerProduct(o.getPricePerProduct())
+                            .cost(o.getCost())
+                            .product(productService.findById(productId)
+                                    .orElseThrow(() -> new ResourceNotFoundException("Продукт с id: " + productId + " не найден")))
+                            .build();
                 }).collect(Collectors.toList());
         order.setItems(items);
         orderRepository.save(order);

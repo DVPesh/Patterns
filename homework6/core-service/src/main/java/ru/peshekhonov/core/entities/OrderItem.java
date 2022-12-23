@@ -1,5 +1,7 @@
 package ru.peshekhonov.core.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 @Table(name = "order_items")
 @NoArgsConstructor
 @Data
+@Builder
+@AllArgsConstructor
 public class OrderItem {
 
     @Id
