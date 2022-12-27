@@ -1,6 +1,9 @@
 package ru.peshekhonov.core.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,10 +17,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "productCache")
 public class ProductService {
 
     private final ProductRepository productRepository;
 
+    @Cacheable(key = "#categoryTitle != null ? 'page'.concat(#page).concat('-').concat(#categoryTitle) : 'page_'.concat(#page)",
+            condition = "#minPrice == null and #maxPrice == null and (#titlePart == null or #titlePart.isEmpty())")
     public Page<Product> findAll(BigDecimal minPrice, BigDecimal maxPrice, String titlePart, String categoryTitle, Integer page) {
         Specification<Product> spec = Specification.where(null);
         if (minPrice != null) {
@@ -36,10 +42,12 @@ public class ProductService {
         return productRepository.findAll(spec, PageRequest.of(page - 1, 5));
     }
 
+    @CacheEvict(allEntries = true)
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
 
+    @CacheEvict(allEntries = true)
     public void createNewProduct(Product product) {
         productRepository.save(product);
     }
