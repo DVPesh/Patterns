@@ -12,6 +12,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
     <script src="dirPagination.js"></script>
+    <script src="stomp.js"></script>
+    <script>
+        const url = "ws://localhost:15674/ws";
+        const client = Stomp.client(url);
+        const on_connect = function () {
+            console.log('connected');
+        };
+        const on_error = function () {
+            console.log('error');
+        };
+        client.connect('guest', 'guest', on_connect, on_error);
+    </script>
 </head>
 
 <body>

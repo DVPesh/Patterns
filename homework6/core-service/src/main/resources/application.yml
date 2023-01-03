@@ -21,3 +21,7 @@ integrations:
     connect-timeout: 5000
     read-timeout: 7000
     write-timeout: 5000
+
+logging:
+  file:
+    name: products-change.log
