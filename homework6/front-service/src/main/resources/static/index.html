@@ -16,8 +16,17 @@
     <script>
         const url = "ws://localhost:15674/ws";
         const client = Stomp.client(url);
+        client.reconnect_delay = 5000;
+        callback = function (message) {
+            if (message.body) {
+                alert(message.body);
+            } else {
+                alert("Получено пустое сообщение");
+            }
+        };
         const on_connect = function () {
             console.log('connected');
+            const subscription = client.subscribe("/exchange/STOMP", callback);
         };
         const on_error = function () {
             console.log('error');
