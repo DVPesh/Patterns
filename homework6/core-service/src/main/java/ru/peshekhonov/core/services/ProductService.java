@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import ru.peshekhonov.core.entities.Product;
 import ru.peshekhonov.core.events.ProductCreatedEvent;
 import ru.peshekhonov.core.events.ProductDeletedEvent;
+import ru.peshekhonov.core.identity.ProductIdentityMap;
 import ru.peshekhonov.core.repositories.ProductRepository;
 import ru.peshekhonov.core.repositories.specifications.ProductSpecifications;
 
@@ -48,16 +49,31 @@ public class ProductService {
 
     @CacheEvict(allEntries = true)
     public void deleteById(Long id) {
-        findById(id).ifPresent(product -> publisher.publishEvent(new ProductDeletedEvent(product)));
+        Product product = null;
+        Optional<Product> optional = findById(id);
+        if (optional.isPresent()) {
+            product = optional.get();
+        }
         productRepository.deleteById(id);
+        ProductIdentityMap.delete(id);
+        if (product != null) {
+            publisher.publishEvent(new ProductDeletedEvent(product));
+        }
     }
 
     @CacheEvict(allEntries = true)
     public void createNewProduct(Product product) {
-        publisher.publishEvent(new ProductCreatedEvent(productRepository.save(product)));
+        product = productRepository.save(product);
+        ProductIdentityMap.add(product);
+        publisher.publishEvent(new ProductCreatedEvent(product));
     }
 
     public Optional<Product> findById(Long id) {
-        return productRepository.findById(id);
+        if (ProductIdentityMap.contains(id)) {
+            return Optional.of(ProductIdentityMap.get(id));
+        }
+        Optional<Product> product = productRepository.findById(id);
+        product.ifPresent(ProductIdentityMap::add);
+        return product;
     }
 }
