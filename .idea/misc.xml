@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/homework6/core-service/pom.xml" />
         <option value="$PROJECT_DIR$/homework6/front-service/pom.xml" />
         <option value="$PROJECT_DIR$/homework6/gateway-service/pom.xml" />
+        <option value="$PROJECT_DIR$/mvc/pom.xml" />
       </list>
     </option>
   </component>
