@@ -1,0 +1,13 @@
+.heading {
+    font-size: 3em;
+    text-align: center;
+    color: blue;
+}
+
+.picture {
+    display: block;
+}
+
+.container {
+    margin: 0 auto;
+}
