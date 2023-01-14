@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/homework6/core-service/core-service.iml" filepath="$PROJECT_DIR$/homework6/core-service/core-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/homework6/front-service/front-service.iml" filepath="$PROJECT_DIR$/homework6/front-service/front-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/homework6/gateway-service/gateway-service.iml" filepath="$PROJECT_DIR$/homework6/gateway-service/gateway-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mvc/mvc.iml" filepath="$PROJECT_DIR$/mvc/mvc.iml" />
     </modules>
   </component>
 </project>
