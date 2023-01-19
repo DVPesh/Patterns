@@ -8,10 +8,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.peshekhonov.api.dto.OrderDetailsDto;
 import ru.peshekhonov.api.dto.OrderDto;
 import ru.peshekhonov.api.exceptions.AppError;
+import ru.peshekhonov.core.exceptions.OrderNotCreatedException;
 import ru.peshekhonov.core.services.OrderService;
 
 import java.util.List;
@@ -57,5 +59,14 @@ public class OrderController {
     public List<OrderDto> getCurrentUserOrders(@RequestHeader
                                                @Parameter(description = "Логин пользователя", required = true) String username) {
         return orderService.findAllOrderDtoByUsername(username);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<AppError> handleOrderNotCreatedException(OrderNotCreatedException e) {
+        AppError appError = AppError.builder()
+                .code("ORDER_NOT_CREATED")
+                .error(e.getMessage())
+                .build();
+        return new ResponseEntity<>(appError, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

@@ -9,6 +9,7 @@ import ru.peshekhonov.api.dto.OrderDto;
 import ru.peshekhonov.api.exceptions.ResourceNotFoundException;
 import ru.peshekhonov.core.entities.Order;
 import ru.peshekhonov.core.entities.OrderItem;
+import ru.peshekhonov.core.exceptions.OrderNotCreatedException;
 import ru.peshekhonov.core.integrations.CartServiceIntegration;
 import ru.peshekhonov.core.mappers.OrderDtoMapper;
 import ru.peshekhonov.core.repositories.OrderRepository;
@@ -29,6 +30,9 @@ public class OrderService {
     @Transactional
     public void createOrder(String username, Optional<OrderDetailsDto> orderDetailsDto) {
         CartDto cart = cartServiceIntegration.getCurrentCart(username);
+        if (cart.getItems().size() == 0) {
+            throw new OrderNotCreatedException("Корзина пуста, заказ не может быть создан");
+        }
         Order order = new Order();
         if (orderDetailsDto.isPresent()) {
             order.setAddress(orderDetailsDto.get().getAddress());
